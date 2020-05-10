@@ -1,4 +1,7 @@
 <div class="stream-list-element" (click)="onClick()">
     <div class="thumbnail"></div>
-    <h3 class="title">{{ stream.title }}</h3>
+    <div class="info">
+        <h3 class="title">{{ stream.title }}</h3>
+        <p class="broadcaster">{{ stream.broadcaster.username }}</p>
+    </div>
 </div>
