@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserService, User } from '../user.service';
+import { UserService, User, UserState} from '../user.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CurrentUserComponent implements OnInit {
   @Input() user: User;
+  UserState = UserState;
   
   constructor() { 
   }
