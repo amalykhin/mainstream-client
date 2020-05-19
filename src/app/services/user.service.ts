@@ -18,10 +18,19 @@ export class UserService {
     return this._currentUser$.asObservable();
   }
 
+  tryChangeCurrentUserState(state: UserState) {
+    let currentUser = this._currentUser$.value;
+    currentUser.state = state;
+    this._currentUser$.next(currentUser);
+
+    console.debug('New user state:');
+    console.debug(this._currentUser$.value);
+  }
+
   login(username, password) {
     const url = `${this.apiUrl}/auth`;
     //console.log('Inside UserService.login()');
-    return this.http.post<User>(url, { username, password })
+    return this.http.post<User>(url, { username, password }, {withCredentials: true})
       .pipe(
         tap(() => console.debug("Inside login()")),
         tap((user) => this._currentUser$.next(user)),

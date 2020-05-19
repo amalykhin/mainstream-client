@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Stream } from '../stream.service';
 import { Router } from '@angular/router';
+import { Stream } from '../services/stream.service';
 
 @Component({
   selector: 'app-stream-list-element',

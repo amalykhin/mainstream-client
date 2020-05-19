@@ -2,23 +2,48 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { User } from './user.service';
+import { User, UserService, UserState } from './user.service';
+import { ThrowStmt } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StreamService {
+  private _currentStream$ = new BehaviorSubject<Stream>(null);
+
   constructor(
     private http: HttpClient, 
-    @Inject('API_URL') private apiUrl
+    @Inject('API_URL') private apiUrl,
+    private userService: UserService
   ) { }
+
+  init(username) {
+    this.http.get<Stream>(`${this.apiUrl}/streams/${username}`, {withCredentials: true})
+      .subscribe((stream) => this._currentStream$.next(stream));
+  }
+
+  get currentStream$() {
+    return this._currentStream$.asObservable();
+  }
 
   startStream(stream: Stream) {
     return this.http.post<Stream>(`${this.apiUrl}/streams`, stream)
       .pipe(
         tap(() => console.debug('Inside startStream()')),
+        tap((stream) => this._currentStream$.next(stream)),
+        tap(() => this.userService.tryChangeCurrentUserState(UserState.Streaming)),
         catchError(this.handleError<Stream>('startStream'))
-      ).toPromise();
+      );
+  }
+
+  endStream(stream: Stream = this._currentStream$.value) {
+    this._currentStream$.next(null);
+    console.debug(stream);
+    return this.http.delete(`${this.apiUrl}/streams/${stream.broadcaster.username}`)
+      .pipe(
+        tap(() => this.userService.tryChangeCurrentUserState(UserState.Active))
+      );
   }
 
   getStreams(): Observable<Stream[]> {

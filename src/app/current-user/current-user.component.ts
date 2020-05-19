@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserService, User, UserState} from '../user.service';
 import { BehaviorSubject } from 'rxjs';
+import { User, UserState } from '../services/user.service';
 
 @Component({
   selector: 'app-current-user',

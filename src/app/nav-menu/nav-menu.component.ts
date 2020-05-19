@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { UserService, User } from '../user.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { User, UserState, UserService } from '../services/user.service';
+import { StreamService } from '../services/stream.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-menu',

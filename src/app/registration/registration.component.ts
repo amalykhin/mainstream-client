@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-registration',

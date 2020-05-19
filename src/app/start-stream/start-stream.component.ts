@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { UserService, User } from '../user.service';
-import { StreamService } from '../stream.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { User, UserService } from '../services/user.service';
+import { StreamService } from '../services/stream.service';
 
 @Component({
   selector: 'app-start-stream',
@@ -37,7 +37,7 @@ export class StartStreamComponent implements OnInit {
   onSubmit(newStreamInfo) {
     newStreamInfo.broadcaster = this.currentUser.username;
     this.streamService.startStream(newStreamInfo)
-      .then(() => this.router.navigate(['']));
+      .subscribe(() => this.router.navigate(['']));
   }
 
   ngOnDestroy() {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StreamService } from '../stream.service';
+import { StreamService } from '../services/stream.service';
 
 @Component({
   selector: 'app-stream-list',

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
-import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from '../services/user.service';
+import { StreamService } from '../services/stream.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private streamService: StreamService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {
@@ -31,7 +33,13 @@ export class LoginComponent implements OnInit {
   onSubmit({username, password}) {
     this.signInForm.reset({username, password: ''});
     this.sub = this.userService.login(username, password)
-      .subscribe(() => this.router.navigate(['']));
+      .subscribe((user) => {
+        console.debug('Auth response:');
+        console.debug(user);
+        
+        this.streamService.init(user.username);
+        this.router.navigate(['']);
+      });
   }
 
   ngOnDestroy() {
