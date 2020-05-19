@@ -11,11 +11,18 @@ import { Router } from '@angular/router';
 })
 export class NavMenuComponent {
   private userSubscription: Subscription;
+
   isExpanded = false;
   currentUser: User;
+  user$;
 
-  constructor(private userService: UserService) {  
-  }
+  UserState = UserState;
+
+  constructor(
+    private userService: UserService,
+    private streamService: StreamService,
+    private router: Router
+  ) { }
 
   collapse() {
     this.isExpanded = false;
@@ -26,14 +33,22 @@ export class NavMenuComponent {
   }
 
   ngOnInit() {
-    this.userSubscription = this.userService.currentUser$
-      .subscribe((user) => {
-        this.currentUser = user;
-        console.debug(`Current user: ${this.currentUser?.username}`);
-      });
+    // this.userSubscription = this.userService.currentUser$
+    //   .subscribe((user) => {
+    //     this.currentUser = user;
+    //     console.debug(`Current user:`);
+    //     console.debug(this.currentUser);
+    //   });
+    this.user$ = this.userService.currentUser$;
   }
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
+  }
+
+  endStream() {
+    console.debug('Ending current stream...');
+    this.streamService.endStream()
+      .subscribe(() => {});
   }
 }

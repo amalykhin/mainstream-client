@@ -20,9 +20,16 @@
         [ngClass]="{ show: isExpanded }"
       >
         <ul class="navbar-nav flex-grow">
-          <li *ngIf="currentUser" class="nav-item" [routerLinkActive]="['link-active']">
-            <button class="nav-link btn btn-primary" [routerLink]="['/start']"
-              >Start a stream</button
+          <li *ngIf="(user$ | async) && (user$ | async)?.state !== UserState.Streaming" 
+          class="nav-item" [routerLinkActive]="['link-active']">
+            <button class="btn btn-primary" [routerLink]="['/start']"
+              >Start a broadcast</button
+            >
+          </li>
+          <li *ngIf="(user$ | async) && (user$ | async)?.state === UserState.Streaming" 
+          class="nav-item" [routerLinkActive]="['link-active']">
+            <button class="btn btn-danger" (click)="endStream()"
+              >Stop broadcasting</button
             >
           </li>
           <li
@@ -37,18 +44,18 @@
               >Watch</a
             >
           </li>
-          <li *ngIf="!currentUser" class="nav-item" [routerLinkActive]="['link-active']">
+          <li *ngIf="!(user$ | async)" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/login']"
               >Sign In</a
             >
           </li>
-          <li *ngIf="!currentUser" class="nav-item" [routerLinkActive]="['link-active']">
-            <button class="nav-link btn btn-primary" [routerLink]="['/signup']"
+          <li *ngIf="!(user$ | async)" class="nav-item" [routerLinkActive]="['link-active']">
+            <button class="btn btn-primary" [routerLink]="['/signup']"
               >Sign Up</button
             >
           </li>
-          <li *ngIf="currentUser" class="nav-item" [routerLinkActive]="['link-active']">
-            <app-current-user [user]="currentUser"></app-current-user>
+          <li *ngIf="(user$ | async)" class="nav-item" [routerLinkActive]="['link-active']">
+            <app-current-user [user]="(user$ | async)"></app-current-user>
           </li>
         </ul>
       </div>
