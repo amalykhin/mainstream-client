@@ -11,9 +11,10 @@ import { StreamService } from '../services/stream.service';
   styleUrls: ['./start-stream.component.css']
 })
 export class StartStreamComponent implements OnInit {
-  currentUser: User;
   private userSubscription: Subscription;
   startStreamForm;
+  currentUser: User;
+  isSelfHosted: boolean = false;
 
   constructor(
     private streamService: StreamService,
@@ -23,7 +24,8 @@ export class StartStreamComponent implements OnInit {
   ) { 
     this.startStreamForm = this.formBuilder.group({
       title: '',
-      description: ''
+      description: '',
+      streamUri: ''
     });
   }
 
@@ -42,5 +44,9 @@ export class StartStreamComponent implements OnInit {
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
+  }
+
+  toggleSelfHosted() {
+    this.isSelfHosted = !this.isSelfHosted;
   }
 }

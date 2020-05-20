@@ -67,5 +67,6 @@ export class StreamService {
 export interface Stream {
   title: string,
   description: string,
-  broadcaster: User
+  broadcaster: User,
+  streamUri: string
 }

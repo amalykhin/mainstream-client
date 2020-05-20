@@ -20,9 +20,11 @@ export class PlayerComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    const stateData = history.state.data;
-    const streamKey = stateData.broadcaster.streamerKey;
-    const streamUrl = `${this.streamServerUrl}/${streamKey}.m3u8`;
+    const stream = history.state.data;
+    console.debug(stream);
+
+    const streamKey = stream.broadcaster.streamerKey;
+    const streamUrl = stream.broadcastUri ?? `${this.streamServerUrl}/${streamKey}.m3u8`;
     this.player = videojs(this.videoElement.nativeElement);
     this.player.src({type: "application/vnd.apple.mpegurl", src: streamUrl}) 
     this.player.ready(() => this.player.play());
