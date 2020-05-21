@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { User, UserState } from '../services/user.service';
+import { User, UserState, UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-current-user',
@@ -11,10 +11,16 @@ export class CurrentUserComponent implements OnInit {
   @Input() user: User;
   UserState = UserState;
   
-  constructor() { 
-  }
+  constructor(
+    private userService: UserService
+  ) { }
 
   ngOnInit() {
+  }
+
+  logOut() {
+    this.userService.logout()
+      .subscribe(() => {});
   }
 
 }

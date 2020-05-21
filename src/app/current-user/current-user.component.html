@@ -1,4 +1,13 @@
-<div>
-    <span class="username">{{ user.username }}</span>
-    <span class="status">{{ UserState[user.state] }}</span>
+<div class="dropdown">
+    <button class="btn btn-outline-secondary" data-toggle="dropdown" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+        <span class="username">{{ user.username }}</span>
+        <span class="badge" 
+        [class.badge-primary]="user.state === UserState.Active" 
+        [class.badge-success]="user.state === UserState.Streaming">
+                {{ UserState[user.state] }}
+        </span>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
+        <a class="dropdown-item" href="#" (click)="logOut()">Log out</a>
+    </div>
 </div>

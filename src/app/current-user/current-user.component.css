@@ -3,8 +3,8 @@ div {
 }
 
 span {
-    display: block;
     font-weight: bold;
+    margin-right: 0.5em;
 }
 
 .status {

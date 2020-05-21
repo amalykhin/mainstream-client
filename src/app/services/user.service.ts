@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap, share, multicast } from 'rxjs/operators';
 import { Observable, of, BehaviorSubject, Subscription } from 'rxjs';
+import { ThrowStmt } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,13 @@ export class UserService {
 
   get currentUser$() {
     return this._currentUser$.asObservable();
+  }
+
+  init() {
+    return this.http.get<User>(`${this.apiUrl}/user`, {withCredentials: true})
+      .pipe(
+        tap(user => this._currentUser$.next(user))
+      );
   }
 
   tryChangeCurrentUserState(state: UserState) {
@@ -35,6 +43,13 @@ export class UserService {
         tap(() => console.debug("Inside login()")),
         tap((user) => this._currentUser$.next(user)),
         catchError(this.handleError<User>('login')),
+      );
+  }
+
+  logout() {
+    return this.http.get(`${this.apiUrl}/logout`, {withCredentials: true})
+      .pipe(
+        tap(() => this._currentUser$.next(null))
       );
   }
 
