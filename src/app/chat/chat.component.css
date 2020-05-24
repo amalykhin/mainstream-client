@@ -1,0 +1,14 @@
+:host {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 5px;
+}
+
+#messages {
+    flex-grow: 1;
+}
+
+textarea {
+    resize: none;
+    max-height: 141px;
+}

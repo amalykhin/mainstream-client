@@ -16,6 +16,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { StartStreamComponent } from './start-stream/start-stream.component';
 import { StreamListComponent } from './stream-list/stream-list.component';
 import { StreamListElementComponent } from './stream-list-element/stream-list-element.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { StreamListElementComponent } from './stream-list-element/stream-list-el
     StartStreamComponent,
     StreamListComponent,
     StreamListElementComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

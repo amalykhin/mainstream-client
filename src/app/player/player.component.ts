@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Url } from 'url';
-
-import videojs from 'video.js';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import videojs from 'video.js';
+
 
 @Component({
   selector: 'app-player',
@@ -11,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PlayerComponent implements OnInit {
   private readonly streamServerUrl = 'http://167.172.107.135:8080/livestreams';
+  
   @ViewChild('video') videoElement: ElementRef;
   player;
 
@@ -24,7 +24,12 @@ export class PlayerComponent implements OnInit {
     console.debug(stream);
 
     const streamKey = stream.broadcaster.streamerKey;
-    const streamUrl = stream.broadcastUri ?? `${this.streamServerUrl}/${streamKey}.m3u8`;
+
+    let streamUrl = stream.broadcastUri;
+    if (!streamUrl) {
+      streamUrl = `${this.streamServerUrl}/${streamKey}.m3u8`;
+    }
+    console.debug(streamUrl);
     this.player = videojs(this.videoElement.nativeElement);
     this.player.src({type: "application/vnd.apple.mpegurl", src: streamUrl}) 
     this.player.ready(() => this.player.play());
