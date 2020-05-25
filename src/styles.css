@@ -21,7 +21,6 @@ code {
 
 .container {
   max-width: initial;
-  overflow: auto;
 }
 
 app-root {

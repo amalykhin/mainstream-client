@@ -6,9 +6,28 @@
 
 #messages {
     flex-grow: 1;
+    list-style-type: none;
+    background: #fafafa;
+    margin: 0;
+    padding: 2ex;
 }
 
 textarea {
     resize: none;
     max-height: 141px;
+}
+
+.sender {
+    font-weight: bold;
+    margin-right: 1ex;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    padding: 1ex;
+    background: #fafafa;
+    box-shadow: 0 5px 10px -13px black;
+    z-index: 1;
 }
