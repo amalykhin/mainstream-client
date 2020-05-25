@@ -19,7 +19,7 @@ export class StreamService {
   ) { }
 
   init(username) {
-    this.http.get<Stream>(`${this.apiUrl}/streams/${username}`, {withCredentials: true})
+    this.getStream(username)
       .subscribe((stream) => this._currentStream$.next(stream));
   }
 
@@ -46,12 +46,16 @@ export class StreamService {
       );
   }
 
-  getStreams(): Observable<Stream[]> {
+  getAllStreams(): Observable<Stream[]> {
     return this.http.get<Stream[]>(`${this.apiUrl}/streams`)
       .pipe(
         tap(() => console.debug('Inside getStreams()')),
         catchError(this.handleError<Stream[]>('getStreams'))
       );
+  }
+
+  getStream(name: string) {
+    return this.http.get<Stream>(`${this.apiUrl}/streams/${name}`);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

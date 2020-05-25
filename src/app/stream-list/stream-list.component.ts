@@ -13,7 +13,7 @@ export class StreamListComponent implements OnInit {
   constructor(private streamService: StreamService) { }
 
   ngOnInit() {
-    this.streamService.getStreams()
+    this.streamService.getAllStreams()
       .subscribe(streams => this.streams = streams);
   }
 

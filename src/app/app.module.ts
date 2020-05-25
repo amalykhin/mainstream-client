@@ -45,7 +45,7 @@ import { ChatComponent } from './chat/chat.component';
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: RegistrationComponent },
       { path: 'start', component: StartStreamComponent },
-      { path: 'stream/:streamerName', component: PlayerComponent },
+      { path: 'stream/:channel', component: PlayerComponent },
     ])
   ],
   providers: [],
