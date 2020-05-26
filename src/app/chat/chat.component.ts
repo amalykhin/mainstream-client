@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
-import { UserService } from '../services/user.service';
+import { fromEvent, Observable } from 'rxjs';
+import { scan } from 'rxjs/operators';
 import { Stream } from '../services/stream.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-chat',
@@ -10,28 +11,34 @@ import { Stream } from '../services/stream.service';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+  private readonly CHAT_ENTRY_LIMIT = 100;
+
   private hubConnection: HubConnection;
   private username: string;
+
   @Input() currentStream: Stream;
-  chatEntries$ = new BehaviorSubject<any[]>([]);
+  chatEntries$: Observable<any>;
 
   constructor(private userService: UserService) { 
     this.hubConnection = new HubConnectionBuilder()
       .withUrl('https://localhost:5001/chat')
       .build();
-    this.hubConnection.start();
-    this.hubConnection.on('ReceiveMessage', chatEntry => {
-      console.debug(chatEntry);
-      const entries = this.chatEntries$.value;
-      entries.push(chatEntry);
-      this.chatEntries$
-        .next(entries);
-    });
+
+    this.chatEntries$ = fromEvent(this.hubConnection, 'receivemessage')
+      .pipe(
+        scan((acc, curr) => {
+          if (acc.push(curr) > this.CHAT_ENTRY_LIMIT) {
+            acc.shift();
+          }
+          return acc;
+        }, [])
+      );
 
     this.userService.currentUser$.subscribe(user => this.username = user.username);
   }
 
   ngOnInit(): void {
+    this.hubConnection.start();
   }
 
   delayedResize(event: KeyboardEvent, textarea: HTMLElement) {
